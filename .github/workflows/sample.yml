@@ -14,13 +14,12 @@ jobs:
       - name: Get latest code
         uses: actions/checkout@v3
 
-      - name: Sync files
-        uses: SamKirkland/FTP-Deploy-Action@v4.3.5
+      - name: rsync deployments
+        uses: burnett01/rsync-deployments@7.0.1
         with:
-          server: momo-lab.net
-          username: ${{ secrets.username }}
-          password: ${{ secrets.password }}
-          local-dir: ./src/
-          server-dir: ./www/sample/
-          dry-run: true
-          dangerous-clean-slate: true
+          switches: -avz --delete
+          path: ./src/
+          remote_path: www/sample/
+          remote_host: momo-lab.net
+          remote_user: ${{ secrets.USERNAME }}
+          remote_key: ${{ secrets.DEPLOY_KEY }}
