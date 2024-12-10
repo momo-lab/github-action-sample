@@ -1,0 +1,26 @@
+name: sample
+
+on:
+  pull_request:
+    branches:
+      - main
+  workflow_dispatch:
+
+jobs:
+  deploy:
+    name: Deploy
+    runs-on: ubuntu-latest
+    steps:
+      - name: Get latest code
+        uses: actions/checkout@v3
+
+      - name: Sync files
+        uses: SamKirkland/FTP-Deploy-Action@v4.3.5
+        with:
+          server: momo-lab.net
+          username: ${{ secrets.username }}
+          password: ${{ secrets.password }}
+          local-dir: ./src/
+          server-dir: ./www/sample/
+          dry-run: true
+          dangerous-clean-slate: true
